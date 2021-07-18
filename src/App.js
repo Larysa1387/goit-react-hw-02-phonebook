@@ -71,23 +71,20 @@ class App extends Component {
   render() {
     const visibleContacts = this.getVisibleContact();
     return (
-      <div className="App">
-        <h1>Phonebook</h1>
-        <section>
-          <ContactForm onSubmit={this.contactPhonebookSubmit} />
-        </section>
-        <h2>Contacts</h2>
-        <section>
-          <Filter value={this.state.filter} onChange={this.changeFilter} />
-        </section>
-        <section>
-          <ContactList
-            contacts={visibleContacts}
-            onDeleteContact={this.deleteContact}
-          />
-        </section>
-      </div>
-    );
+			<div className="App">
+				<h1>Phonebook</h1>
+				<ContactForm
+					contacts={this.state.contacts}
+					onSubmit={this.contactPhonebookSubmit}
+				/>
+				<h2>Contacts</h2>
+				<Filter value={this.state.filter} onChange={this.changeFilter} />
+				<ContactList
+					contacts={visibleContacts}
+					onDeleteContact={this.deleteContact}
+				/>
+			</div>
+		);
   }
 }
 
