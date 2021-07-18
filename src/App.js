@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 import Form from './components/Form';
 import Contacts from './components/Contacts';
+import Filter from './components/Filter';
 import './App.css';
 
 class App extends Component {
@@ -31,15 +32,14 @@ class App extends Component {
 				number: '227-91-26',
 				contactType: 'work',
 			},
-		],
+    ],
+    filter:'',
 	};
-
-  contactPhonebookId = shortid.generate();
 
 	contactPhonebookSubmit = (data) => {
 		console.log(data);
 		const contact = {
-			id: this.contactPhonebookId,
+			id: shortid.generate(),
 			name: data.name,
 			number: data.number,
 			contactType: data.contactType,
@@ -47,21 +47,33 @@ class App extends Component {
 		this.setState(({contacts}) => ({
 			contacts: [contact, ...contacts],
 		}));
-	};
+  };
 
-	render() {
+  changeFilter = (e) => {
+    this.setState({ filter: e.currentTarget.value });
+  }
+  getVisibleContact = () => {
+    const { filter, contacts } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+		return contacts.filter((contact) =>
+			contact.name.toLowerCase().includes(normalizedFilter),
+		);
+  }
+
+  render() {
+    const visibleContacts = this.getVisibleContact();
 		return (
 			<div className="App">
 				<h1>Phonebook</h1>
 				<section>
 					<Form onSubmit={this.contactPhonebookSubmit} />
 				</section>
-        <h2>Contacts</h2>
-        <section>
-          {/* <Filter/> */}
-        </section>
+				<h2>Contacts</h2>
 				<section>
-					<Contacts contacts={this.state.contacts} />
+					<Filter value={this.state.filter} onChange={this.changeFilter} />
+				</section>
+				<section>
+					<Contacts contacts={visibleContacts} />
 				</section>
 			</div>
 		);
