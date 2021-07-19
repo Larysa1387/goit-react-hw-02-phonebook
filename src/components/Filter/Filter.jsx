@@ -1,12 +1,13 @@
 import React from 'react';
+import s from './Filter.module.css';
 
 const Filter = ({ value, onChange }) => {
   return (
-    <label htmlFor="">
-      Find contact by name
-      <input type="text" name="filter" value={value} onChange={onChange} />
-    </label>
-  );
+		<label className={s.inputLabel}>
+			Find contact by name
+			<input className={s.inputFilter} type="text" name="filter" value={value} placeholder="Start to type" onChange={onChange} />
+		</label>
+	);
 };
 
 export default Filter;

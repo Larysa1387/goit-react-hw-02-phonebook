@@ -37,12 +37,12 @@ class App extends Component {
   };
 
   contactPhonebookSubmit = (data) => {
-    console.log(data);
+    const { name, number, contactType } = data;
     const contact = {
       id: shortid.generate(),
-      name: data.name,
-      number: data.number,
-      contactType: data.contactType,
+      name,
+      number,
+      contactType,
     };
     this.setState(({ contacts }) => ({
       contacts: [contact, ...contacts],
@@ -61,30 +61,30 @@ class App extends Component {
   };
 
   deleteContact = (contactId) => {
-    this.setState((prevState) => ({
-      contacts: prevState.contacts.filter(
-        (contact) => contact.id !== contactId,
-      ),
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter((contact) => contact.id !== contactId),
+      filter: '',
     }));
   };
 
   render() {
+    const { contacts, filter } = this.state;
     const visibleContacts = this.getVisibleContact();
     return (
-			<div className="App">
-				<h1>Phonebook</h1>
-				<ContactForm
-					contacts={this.state.contacts}
-					onSubmit={this.contactPhonebookSubmit}
-				/>
-				<h2>Contacts</h2>
-				<Filter value={this.state.filter} onChange={this.changeFilter} />
-				<ContactList
-					contacts={visibleContacts}
-					onDeleteContact={this.deleteContact}
-				/>
-			</div>
-		);
+      <div className="App">
+        <h1 className="App-header">Phonebook</h1>
+        <ContactForm
+          contacts={contacts}
+          onSubmit={this.contactPhonebookSubmit}
+        />
+        <h2 className="App-header">Contacts</h2>
+        <Filter value={filter} onChange={this.changeFilter} />
+        <ContactList
+          contacts={visibleContacts}
+          onDeleteContact={this.deleteContact}
+        />
+      </div>
+    );
   }
 }
 

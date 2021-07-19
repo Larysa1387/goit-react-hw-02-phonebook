@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
+import s from './ContactForm.module.css';
 
+const INITIAL_STATE = {
+  name: '',
+  number: '',
+  contactType: 'home',
+};
 class ContactForm extends Component {
   state = {
-    name: '',
-    number: '',
-    contactType: 'home',
+    ...INITIAL_STATE,
   };
 
   contactInputId = shortid.generate();
@@ -20,7 +24,7 @@ class ContactForm extends Component {
     e.preventDefault();
     const { name } = this.state;
     const { contacts, onSubmit } = this.props;
-    if (contacts.find(contact => contact.name === name)) {
+    if (contacts.find((contact) => contact.name === name)) {
       return alert(`${name} is already in contacts`);
     }
     onSubmit(this.state);
@@ -28,77 +32,85 @@ class ContactForm extends Component {
   };
 
   reset = () => {
-    this.setState({ name: '', number: '', contactType: 'home' });
+    this.setState({ ...INITIAL_STATE });
   };
 
   render() {
+    const { name, number, contactType } = this.state;
     return (
-      <form onSubmit={this.handleFormSubmit}>
-        <label htmlFor={this.contactInputId}>
-          Name
-          <input
-            type="text"
-            name="name"
-            value={this.state.name}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            required
-            autoComplete="off"
-            id={this.contactInputId}
-            onChange={this.handleInputChange}
-          />
-        </label>
-        <label htmlFor={this.numberInputId}>
-          Number
-          <input
-            type="tel"
-            name="number"
-            value={this.state.number}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-            required
-            id={this.numberInputId}
-            onChange={this.handleInputChange}
-          />
-        </label>
-
-        <p>Choose type of contact</p>
-        <label>
-          <input
-            type="radio"
-            name="contactType"
-            value="home"
-            onChange={this.handleInputChange}
-            checked={this.state.contactType === 'home'}
-          />
-          Home
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="contactType"
-            value="work"
-            onChange={this.handleInputChange}
-            checked={this.state.contactType === 'work'}
-          />
-          Work
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="contactType"
-            value="other"
-            onChange={this.handleInputChange}
-            checked={this.state.contactType === 'other'}
-          />
-          Other
-        </label>
-        <button type="submit" disabled={!this.state.name}>
+      <form onSubmit={this.handleFormSubmit} className={s.ContactForm}>
+        <div className={s.align}>
+          <label htmlFor={this.contactInputId} className={s.inputLabel}>
+            Name
+            <input
+              className={s.formInput}
+              type="text"
+              name="name"
+              value={name}
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+              required
+              autoComplete="off"
+              id={this.contactInputId}
+              placeholder="Enter name"
+              onChange={this.handleInputChange}
+            />
+          </label>
+          <label htmlFor={this.numberInputId} className={s.inputLabel}>
+            Number
+            <input
+              className={s.formInput}
+              type="tel"
+              name="number"
+              value={number}
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+              title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+              required
+              id={this.numberInputId}
+              placeholder="+380..."
+              onChange={this.handleInputChange}
+            />
+          </label>
+        </div>
+          <p className={s.radioTitle}>Choose type of contact</p>
+        <div className={s.radioAlign}>
+          <label className={s.radioLabel}>
+            <input
+              type="radio"
+              name="contactType"
+              value="home"
+              onChange={this.handleInputChange}
+              checked={contactType === 'home'}
+            />
+            Home
+          </label>
+          <label className={s.radioLabel}>
+            <input
+              type="radio"
+              name="contactType"
+              value="work"
+              onChange={this.handleInputChange}
+              checked={contactType === 'work'}
+            />
+            Work
+          </label>
+          <label className={s.radioLabel}>
+            <input
+              type="radio"
+              name="contactType"
+              value="other"
+              onChange={this.handleInputChange}
+              checked={contactType === 'other'}
+            />
+            Other
+          </label>
+        </div>
+        <button className={s.btnSubmit} type="submit" disabled={!name}>
           Add contact
         </button>
       </form>
     );
   }
-  }
+}
 
 export default ContactForm;
