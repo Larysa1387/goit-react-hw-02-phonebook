@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import s from './ContactForm.module.css';
 
@@ -112,5 +113,10 @@ class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.shape(PropTypes.string.isRequired)),
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default ContactForm;
